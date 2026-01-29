@@ -35,7 +35,7 @@ const App = () => {
   }
 
   const initVotes = new Array(anecdotes.length).fill(0)
-  //console.log(initVotes)
+  console.log(initVotes)
   const [votes, setVotes] = useState(initVotes)
   const vote = () => {
     // increment the value in position 2 by one
@@ -44,8 +44,24 @@ const App = () => {
     setVotes(newVote)
   }
 
+  console.log(votes)
+  
+  function getAxisMaxAndIndex() {
+    let maxValue = votes[0];
+    let maxIndex = 0;
+
+    for (let i = 1; i < votes.length; i++) {
+      if (votes[i] > maxValue) {
+        maxValue = votes[i];
+        maxIndex = i;
+      }
+    }
+    return maxIndex;
+  }
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {votes[selected]} vote</div>
       <button onClick={vote}>
@@ -54,6 +70,8 @@ const App = () => {
       <button onClick={nextAnecdotes}>
         next anecdotes
       </button>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[getAxisMaxAndIndex()]}</div>
     </div>
   )
 }
