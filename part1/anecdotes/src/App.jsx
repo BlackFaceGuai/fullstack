@@ -33,13 +33,27 @@ const App = () => {
     console.log(finalValue)
     setSelected(finalValue);
   }
+
+  const initVotes = new Array(anecdotes.length).fill(0)
+  //console.log(initVotes)
+  const [votes, setVotes] = useState(initVotes)
+  const vote = () => {
+    // increment the value in position 2 by one
+    const newVote = [...votes]
+    newVote[selected] += 1
+    setVotes(newVote)
+  }
+
   return (
     <div>
       <div>{anecdotes[selected]}</div>
+      <div>has {votes[selected]} vote</div>
+      <button onClick={vote}>
+        vote
+      </button>
       <button onClick={nextAnecdotes}>
         next anecdotes
       </button>
-
     </div>
   )
 }
