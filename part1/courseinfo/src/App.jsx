@@ -46,6 +46,7 @@ const App = () => {
 
   return (
     <div>
+      <h1>Web development curriculum</h1>
       {courses.map((course) => {
         return <Course key={course.id} course={course}/>
       })}
@@ -72,32 +73,20 @@ const Course = (props) => {
 
 const Header = (props) => {
   console.log("Header props:", props);
-  return <h1>{props.name}</h1>
+  return <h2>{props.name}</h2>
 }
 
 const Content = (props) => {
   console.log("Content",props);
   
   return (
-    <div>
-      {props.parts.map(part => {
-        return <p key={part.id}>{part.name} {part.exercises}</p>
-      })}
-    </div>
-  )
-}
-
-const Part = ({name, exercises}) => {
-  return (
-    <p>
-      {name} {exercises}
-    </p>
+    <p key={props.id}>{props.name} {props.exercises}</p>
   )
 }
 
 const Total = (props) => {
   return (
-    <p>Total exercises: {calculateTotal(props.parts)}</p>
+    <p style={{ fontWeight: 'bold' }}>total of {calculateTotal(props.parts)} exercises</p>
   )
 }
 
@@ -105,12 +94,4 @@ const calculateTotal = (parts) => {
   return parts.reduce((sum, part) => sum + part.exercises, 0)
 }
 
-const TotalOld = (props) => {
-  return (
-    <>
-      {/* <p style={{ fontWeight: 'bold' }}>total of {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises + props.parts[3].exercises} exercises</p> */}
-      <p style={{ fontWeight: 'bold' }}>total of {props.parts.reduce((sum, part) => sum + part.exercises, 0)} exercises </p>
-    </>
-  )
-}
 export default App
