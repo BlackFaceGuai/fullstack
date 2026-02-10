@@ -17,6 +17,7 @@ const App = () => {
   }
   useEffect(hook, [])
   console.log('render', persons.length, 'persons')
+  
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -39,7 +40,14 @@ const App = () => {
       })
   }
 
-  const filteredPersons = persons.filter(person => 
+  const deletePerson = (id) => {
+    phoneBookService.deletePerson(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+  }
+
+  const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
 
@@ -50,7 +58,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm add={add} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
       <h3>Numbers</h3>
-      <Person filteredPersons={filteredPersons} />
+      <Person filteredPersons={filteredPersons} deletePerson={deletePerson} />
     </div>
   )
 }
