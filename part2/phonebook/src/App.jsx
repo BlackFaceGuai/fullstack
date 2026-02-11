@@ -33,10 +33,17 @@ const App = () => {
         phoneBookService.updatePerson(person.id, changedPerson)
           .then(returnedData => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedData))
-            setMessage(`Updated ${newName}'s number`)
+            setMessage({ text: `Updated ${newName}'s number`, type: 'success' })
             setTimeout(() => {
-              setMessage(null)
-            }, 5000)
+                setMessage(null)
+              }, 5000)
+          })
+          .catch(error => {
+            setMessage({ text: `Information of ${newName} has already been removed from server`, type: 'error' })
+            setTimeout(() => {
+                setMessage(null)
+              },5000)
+            setPersons(persons.filter(p => p.id != person.id))
           })
       }
     }
@@ -49,7 +56,7 @@ const App = () => {
       phoneBookService.create(personObject)
         .then(returnedData => {
           setPersons(persons.concat(returnedData))
-          setMessage(`Added ${newName}`)
+          setMessage({ text: `Added ${newName}`, type: 'success' })
           setTimeout(() => {
             setMessage(null)
           }, 5000)
@@ -62,6 +69,13 @@ const App = () => {
   const deletePerson = (id) => {
     phoneBookService.deletePerson(id)
       .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+      .catch(error => {
+        setMessage({ text: `Information of the person has already been removed from server`, type: 'error' })
+        setTimeout(() => {
+            setMessage(null)
+          },5000)
         setPersons(persons.filter(p => p.id !== id))
       })
   }
