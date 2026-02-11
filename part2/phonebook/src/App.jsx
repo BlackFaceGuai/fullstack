@@ -3,9 +3,15 @@ import phoneBookService from './services/phonebook'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Person'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState(null)
   
   const hook = () => {
     console.log('effect')
@@ -17,10 +23,6 @@ const App = () => {
   }
   useEffect(hook, [])
   console.log('render', persons.length, 'persons')
-  
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
-  const [filter, setFilter] = useState('')
 
   const add = (event) => {
     event.preventDefault()
@@ -31,6 +33,10 @@ const App = () => {
         phoneBookService.updatePerson(person.id, changedPerson)
           .then(returnedData => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedData))
+            setMessage(`Updated ${newName}'s number`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
       }
     }
@@ -43,6 +49,10 @@ const App = () => {
       phoneBookService.create(personObject)
         .then(returnedData => {
           setPersons(persons.concat(returnedData))
+          setMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
     setNewName('')
@@ -60,9 +70,11 @@ const App = () => {
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
 
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filter={filter} setFilter={setFilter} />
       <h3>Add a new</h3>
       <PersonForm add={add} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
