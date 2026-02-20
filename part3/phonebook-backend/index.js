@@ -1,6 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 const app  = express()
+
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     { 
@@ -48,11 +51,6 @@ app.get('/info', (request, response) => {
     response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
 })
 
-const PORT = 3001
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
-
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
     persons = persons.filter(person => person.id !== id)
@@ -83,4 +81,9 @@ app.post('/api/persons', (request, response) => {
     }
     persons = persons.concat(person)
     response.json(person)
+})
+
+const PORT = 3001
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
 })
