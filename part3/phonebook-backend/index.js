@@ -3,7 +3,14 @@ const morgan = require('morgan')
 const app  = express()
 
 app.use(express.json())
-app.use(morgan('tiny'))
+
+// 自定义 morgan token 显示 POST 请求数据
+morgan.token('post-data', (request) => {
+  return JSON.stringify(request.body)
+})
+
+// 自定义格式：tiny + POST 数据
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-data'))
 
 let persons = [
     { 
