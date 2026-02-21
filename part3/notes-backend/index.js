@@ -16,6 +16,9 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger)
 
+const cors = require('cors')
+app.use(cors())
+
 // 辅助函数
 const generateId = () => {
   const maxId = notes.length > 0
